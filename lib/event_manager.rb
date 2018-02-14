@@ -3,6 +3,9 @@ require "google/apis/civicinfo_v2"
 require "erb"
 require "date"
 
+#Used global variables just so that I won't have any problems with scope. 
+#In a proper program with classes, modules, etc, would have to put in more 
+#thought on proper scope.
 $hour_array = []
 $day_array = []
 
@@ -81,6 +84,7 @@ def save_thank_you_letters(id, form_letter)
 	end
 end
 
+#Beginning of output.
 puts "EventManager Initialized!\n\n"
 
 contents = CSV.open "../event_attendees.csv", headers: true, header_converters: :symbol
@@ -98,17 +102,17 @@ contents.each do |row|
 
 	#clean_phone_number isn't used for anything. Assignment calls for cleaning
 	#phone numbers as they are parsed through the iterator.
-	#phone_number = clean_phone_number(row[:homephone].gsub(/\W+/, ""))
+	phone_number = clean_phone_number(row[:homephone].gsub(/\W+/, ""))
 
 	#clean_zipcode and the rest of the method calls below are used to format a
 	#thank you letter and to input data into our ERB file. 
-	#zipcode = clean_zipcode(row[:zipcode])
+	zipcode = clean_zipcode(row[:zipcode])
 
-	#legislators = legislators_by_zipcode(zipcode)
+	legislators = legislators_by_zipcode(zipcode)
 
-	#form_letter = erb_template.result(binding)
+	form_letter = erb_template.result(binding)
 
-	#save_thank_you_letters(id, form_letter)
+	save_thank_you_letters(id, form_letter)
 end
 
 #Additional assignment given by project. Client wishes to know which hours and 
